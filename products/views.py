@@ -312,6 +312,14 @@ class GetProductsAPI(APIView):
 
         return Response({'result': 'success', 'productId': str(product.id)}, status=status.HTTP_201_CREATED)
     
+    def delete(self, request):
+        ''' productId: uuid|str '''
+        if product_id := request.GET.get('productId'):
+            product = Product.objects.get(id=product_id)
+            product.delete()
+            return Response({'result': 'success'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'productId field is required'}, status=status.HTTP_409_CONFLICT)
 
 class GetImageAPI(APIView):
     def get(self, request):
@@ -364,8 +372,32 @@ class SubcategoryesAPI(APIView):
             return Response({'error': 'category not found'}, status=status.HTTP_404_NOT_FOUND)
         
         if name := request.GET.get('subcategoryName'):
-            subcategory = Subcategory.objects.create(name=name)
-            return Response({'result': 'success', 'subcategoryId': str(subcategory.id)}, status=status.HTTP_409_CONFLICT)
+            subcategory = Subcategory.objects.create(name=name, category=category)
+            return Response({'result': 'success', 'subcategoryId': str(subcategory.id)}, status=status.HTTP_201_CREATED)
         else:
             return Response({'error': 'name field is required'}, status=status.HTTP_409_CONFLICT)
-    
+
+
+class ProductsActionsAPI(APIView):
+    def post(self, request):
+        ''' 
+            productId: uuid|str
+            action: str
+        '''
+        data = request.POST
+
+        product_id = data.get('productId')
+        action = data.get('action') # remove | add
+
+        try:
+            product = Product.objects.get(id=product_id)
+        except:
+            return Response({'error': 'product not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        if action == 'add':
+            product.count += 1
+        elif action == 'remove':
+            product.count -= 1
+        
+        product.save()
+        return Response({'result': 'success'}, status=status.HTTP_200_OK)
