@@ -314,6 +314,34 @@ class GetProductsAPI(APIView):
         else:
             products = Product.objects.all()
 
+        filter_name = request.GET.get('filter_name')
+        filter_category = request.GET.get('categoryId')
+        filter_subcategory = request.GET.get('subcategoryId')
+        filter_mark = request.GET.get('mark')
+        filter_model = request.GET.get('model')
+        filter_generation = request.GET.get('generation')
+        filter_quality = request.GET.get('quality')
+        filter_state = request.GET.get('state')
+
+        if filter_name:
+            products = products.filter(name=filter_name)
+        if filter_category:
+            category = Category.objects.get(id=filter_category)
+            products = products.filter(category=category)
+        if filter_subcategory:
+            subcategory = Subcategory.objects.get(id=filter_subcategory)
+            products = products.filter(subcategory=subcategory)
+        if filter_mark:
+            products = products.filter(mark=filter_mark)
+        if filter_model:
+            products = products.filter(model=filter_model)
+        if filter_generation:
+            products = products.filter(generation=filter_generation)
+        if filter_quality:
+            products = products.filter(quality=filter_quality)
+        if filter_state:
+            products = products.filter(state=filter_state)
+
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
