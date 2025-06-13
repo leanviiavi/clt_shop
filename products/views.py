@@ -16,7 +16,7 @@ from rest_framework.serializers import ModelSerializer
 import os
 from uuid import uuid4
 import json
-
+import jwt
 
 MARKS: list[str] = [
     "Abarth", "Acura", "Aeon", "Aiways", "Aixam", "Alfa Romeo", "Alpina",
@@ -347,6 +347,10 @@ class GetProductsAPI(APIView):
     
     def post(self, request):
         data = json.loads(request.body)
+        if access_token := data.get('access_token'):
+            if p := jwt.decode(access_token, 'test_admin_key'):
+                if not p.get('is_admin'):
+                    return Response({'error': 'Unauthorized exception'}, status=status.HTTP_401_UNAUTHORIZED)
 
         name = data.get('name') or '-'
         quality = data.get('quality') or 'Новое'
@@ -462,6 +466,11 @@ class SubcategoryesAPI(APIView):
 
     def post(self, request):
         ''' categoryId: uuid|str '''
+        if access_token := request.GET.get('access_token'):
+            if p := jwt.decode(access_token, 'test_admin_key'):
+                if not p.get('is_admin'):
+                    return Response({'error': 'Unauthorized exception'}, status=status.HTTP_401_UNAUTHORIZED)
+                
         category_id = request.GET.get('categoryId')
         
         try:
@@ -608,3 +617,15 @@ class FiltersAPI(APIView):
                 }
             ],
         status=status.HTTP_200_OK)
+    
+
+class AdminAuthAPI(APIView):
+    def get(self, request):
+        admin_login = os.getenv('ADMIN_LOGIN')
+        admin_password = os.getenv('ADMIN_PASSWORD')
+
+        if admin_login == request.GET.get('login') and admin_password == request.GET.get('password'):
+            token = jwt.encode({'is_admin': True}, key='test_admin_key').decode()
+            return Response({'token': token}, status=status.HTTP_200_OK)
+        
+        return Response({'error': 'Unauthorized exception'}, status=status.HTTP_401_UNAUTHORIZED)
