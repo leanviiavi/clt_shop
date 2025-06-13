@@ -242,6 +242,11 @@ class SubcategorySerializer(ModelSerializer):
         model = Category
         fields = '__all__'
 
+class CartSerializer(ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = '__all__'
+
 class GetProductsAPI(APIView):
     def get(self, request):
         ''' prouduct_id: uuid|str '''
@@ -352,8 +357,14 @@ class CategoryesAPI(APIView):
     
 class SubcategoryesAPI(APIView):
     def get(self, request):
-        ''' subcategoryId: uuid|str '''
-        if subcategory_id := request.GET.get('subcategoryId'):
+        ''' 
+            subcategoryId: uuid|str
+            categoryId: uuid:str 
+        '''
+        if category_id := request.GET.get('categoryId'):
+            category = Category.objects.get(id=category_id)
+            subcategoryes = Subcategory.objects.filter(category=category)
+        elif subcategory_id := request.GET.get('subcategoryId'):
             subcategoryes = Subcategory.objects.filter(id=subcategory_id)
         else:
             subcategoryes = Subcategory.objects.all()
@@ -405,7 +416,27 @@ class ProductsActionsAPI(APIView):
 
 class CartAPI(APIView):
     def get(self, request):
-        ...
+        ''' cartId: uuid|str '''
+        if cart_id := request.GET.get('cartId'):
+            carts = Subcategory.objects.filter(id=cart_id)
+        else:
+            carts = Subcategory.objects.all()
+
+        serializer = CartSerializer(carts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request):
-        ...
+        '''
+            products: [{productId: uuid: str, count: int}]
+        '''
+        products = request.POST.get('products')
+        cart = Cart.objects.create()
+        for p in products:
+            product = Product.objects.get(id=p['productId'])
+            count = p['count']
+            
+            order = Order.objects.create(product=product, count=count)
+            cart.products.add(order)
+            cart.save()
+        
+        return Response({'result': 'success', 'cartId': str(cart.id)})
