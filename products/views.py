@@ -504,7 +504,7 @@ class CartAPI(APIView):
 class FiltersAPI(APIView):
     def get(self, request):
         models = []
-        with open('cart_models_extended.json') as f:
+        with open('car_models_extended.json') as f:
             models = json.loads(f.read())
 
         models_ = {}
