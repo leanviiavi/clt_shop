@@ -15,7 +15,66 @@ from rest_framework.serializers import ModelSerializer
 
 import os
 from uuid import uuid4
+import json
 
+
+MARKS: list[str] = [
+    "Abarth", "Acura", "Aeon", "Aiways", "Aixam", "Alfa Romeo", "Alpina",
+  "Alta", "AM General", "AMC", "Ariel", "Armstrong Siddeley", "Arrinera", 
+  "Artega", "Ascari", "Aspark", "Aston Martin", "Audi", "Aurus", "Autobianchi",
+  "BAIC", "Baojun", "BAC", "Bentley", "Bertone", "Bizzarrini", "Bollinger",
+  "Borgward", "Brabus", "Bristol", "Brilliance", "Brooke", "Bufori", "Bugatti",
+  "Buick", "BYD", "Callaway", "Canoo", "Caparo", "Caprice", "Carbodies", "Carlsson",
+  "Casalini", "Caterham", "Changan", "Changfeng", "Chery", "Chevrolet", "Chrysler",
+  "Cisitalia", "Citroën", "Cizeta", "Clenet", "Cupra", "Dacia", "Daewoo",
+  "Daihatsu", "Dallara", "Datsun", "De Tomaso", "DeLorean", "Derways", "Detroit Electric",
+  "Dodge", "Dongfeng", "Drako", "DS Automobiles", "Eagle", "Edsel", "Eicher Polaris",
+  "Elemental", "Elfin", "EMC", "Emgrand", "Emil Frey", "Englon", "Equus", "Eterniti",
+  "Excalibur", "FAW", "Faraday Future", "Ferrari", "Fiat", "Fisker", "Foday",
+  "Force Motors", "Ford", "Foton", "GAC", "Galeon", "Geely", "Genesis", "Gibbs",
+  "Gillet", "Ginetta", "GMC", "Gonow", "Great Wall", "Gumpert", "Hafei", "Haima",
+  "Hanergy", "Haval", "Hennessey", "Hindustan", "Hino", "Holden", "Honda",
+  "Hongqi", "Horch", "Hozon", "Hummer", "Hyundai", "Infiniti", "Iran Khodro",
+  "Isdera", "Isuzu", "Italdesign", "Iveco", "JAC", "Jaguar", "Jeep", "Jensen",
+  "Jetour", "Jetta", "Jinbei", "JMC", "Joylong", "Karma", "Karry", "Kia",
+  "Koenigsegg", "Lada", "Lagonda", "Lamborghini", "Lancia", "Land Rover",
+  "Landwind", "Leapmotor", "Lexus", "Lifan", "Ligier", "Lincoln", "Local Motors",
+  "Lordstown", "Lotus", "Lucid", "Luxgen", "Mahindra", "Man", "Marcos",
+  "Maserati", "Matra", "Maybach", "Mazda", "McLaren", "Mega", "Melkus",
+  "Mercedes-AMG", "Mercedes-Benz", "Mercury", "Metrocab", "Microcar", "MINI",
+  "Mitsuoka", "Mitsubishi", "Mobius Motors", "Morgan", "Morris", "Moskvich",
+  "Nio", "Nissan", "Noble", "NSU", "Oldsmobile", "Omoda", "Opel", "ORA",
+  "Pagani", "Panoz", "Peel", "Perodua", "Peugeot", "PGO", "Pininfarina",
+  "Plymouth", "Polestar", "Pontiac", "Porsche", "Premier", "Proton", "Qoros",
+  "Radical", "Rambler", "RAM", "Ravon", "Reliant", "Renault", "Rezvani", 
+  "Rimac", "Rivian", "Roewe", "Rolls-Royce", "Rover", "Saab", "Sachsenring",
+  "Saleen", "Samsung", "Saturn", "Scion", "SEAT", "Seres", "Shelby",
+  "Shuanghuan", "Simca", "Singer", "Skoda", "Skywell", "Smart", "Soueast",
+  "Spyker", "SsangYong", "Steyr", "Studebaker", "Subaru", "Suzuki", "Talbot",
+  "Tarpan", "Tata", "Tatra", "Tesla", "Toyota", "Trabant", "Traum", "Trion",
+  "Triumph", "TVR", "UAZ", "Ultima", "Vauxhall", "Vencer", "Venucia", "Vector",
+  "VGV", "VinFast", "Volkswagen", "Volvo", "Vortex", "Voyah", "W Motors",
+  "Wanderer", "Wartburg", "Wey", "Westfield", "Willys", "Wuling", "Yugo",
+  "ZAZ", "Zenos", "Zenvo", "Zhongxing", "Zotye", "ZX Auto"
+]
+
+GENERATIONS: list[str] = [
+    "1950-1955",
+    "1956-1960",
+    "1961-1965",
+    "1966-1970",
+    "1971-1975",
+    "1976-1980",
+    "1981-1985",
+    "1986-1990",
+    "1991-1995",
+    "1996-2000",
+    "2001-2005",
+    "2006-2010",
+    "2011-2015",
+    "2016-2020",
+    "2021-2025"
+]
 
 def to_main(request):
     return HttpResponseRedirect('/products')
@@ -440,3 +499,69 @@ class CartAPI(APIView):
             cart.save()
         
         return Response({'result': 'success', 'cartId': str(cart.id)})
+    
+
+class FiltersAPI(APIView):
+    def get(self, request):
+        models = []
+        with open('cart_models_extended.json') as f:
+            models = json.loads(f.read())
+
+        models_ = {}
+        for model in models:
+            models_[model['mark']] = model['options']
+
+        return Response(
+            [
+                {
+                    'filter': 'Марка авто',
+                    'options': [
+                        {
+                            'id': index,
+                            'value': value
+                        } for index, value in enumerate(list(models_.keys()))
+                    ]
+                },
+                {
+                    'filter': 'Модель',
+                    'options': [
+                        models_
+                    ]
+                },
+                {
+                    'filter': 'Поколение',
+                    'options': [
+                        {
+                            'id': index,
+                            'value': value
+                        } for index, value in enumerate(GENERATIONS)
+                    ]
+                },
+                {
+                    'filter': 'Качество',
+                    'options': [
+                        {
+                            'id': 1,
+                            'value': 'Оригинал'
+                        },
+                        {
+                            'id': 2,
+                            'value': 'Дубликат'
+                        }, 
+                    ]
+                },
+                {
+                    'filter': 'Состояние',
+                    'options': [
+                        {
+                            'id': 1,
+                            'value': 'Новая'
+                        },
+                        {
+                            'id': 2,
+                            'value': 'Б/У'
+                        }, 
+                    ]
+                }
+            ],
+        status=status.HTTP_200_OK)

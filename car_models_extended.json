@@ -1,0 +1,810 @@
+[
+  {
+    "filter": "марка машины",
+    "mark": "BMW",
+    "options": [
+      {
+        "id": "1",
+        "value": "X1"
+      },
+      {
+        "id": "2",
+        "value": "X3"
+      },
+      {
+        "id": "3",
+        "value": "X5"
+      },
+      {
+        "id": "4",
+        "value": "X6"
+      },
+      {
+        "id": "5",
+        "value": "3 Series"
+      },
+      {
+        "id": "6",
+        "value": "5 Series"
+      },
+      {
+        "id": "7",
+        "value": "7 Series"
+      },
+      {
+        "id": "8",
+        "value": "i3"
+      },
+      {
+        "id": "9",
+        "value": "i8"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Mercedes-Benz",
+    "options": [
+      {
+        "id": "1",
+        "value": "A-Class"
+      },
+      {
+        "id": "2",
+        "value": "C-Class"
+      },
+      {
+        "id": "3",
+        "value": "E-Class"
+      },
+      {
+        "id": "4",
+        "value": "S-Class"
+      },
+      {
+        "id": "5",
+        "value": "GLA"
+      },
+      {
+        "id": "6",
+        "value": "GLC"
+      },
+      {
+        "id": "7",
+        "value": "GLE"
+      },
+      {
+        "id": "8",
+        "value": "GLS"
+      },
+      {
+        "id": "9",
+        "value": "EQC"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Audi",
+    "options": [
+      {
+        "id": "1",
+        "value": "A3"
+      },
+      {
+        "id": "2",
+        "value": "A4"
+      },
+      {
+        "id": "3",
+        "value": "A5"
+      },
+      {
+        "id": "4",
+        "value": "A6"
+      },
+      {
+        "id": "5",
+        "value": "A8"
+      },
+      {
+        "id": "6",
+        "value": "Q3"
+      },
+      {
+        "id": "7",
+        "value": "Q5"
+      },
+      {
+        "id": "8",
+        "value": "Q7"
+      },
+      {
+        "id": "9",
+        "value": "e-tron"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Toyota",
+    "options": [
+      {
+        "id": "1",
+        "value": "Corolla"
+      },
+      {
+        "id": "2",
+        "value": "Camry"
+      },
+      {
+        "id": "3",
+        "value": "RAV4"
+      },
+      {
+        "id": "4",
+        "value": "Highlander"
+      },
+      {
+        "id": "5",
+        "value": "Land Cruiser"
+      },
+      {
+        "id": "6",
+        "value": "Prius"
+      },
+      {
+        "id": "7",
+        "value": "Hilux"
+      },
+      {
+        "id": "8",
+        "value": "Tundra"
+      },
+      {
+        "id": "9",
+        "value": "Sequoia"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Hyundai",
+    "options": [
+      {
+        "id": "1",
+        "value": "Accent"
+      },
+      {
+        "id": "2",
+        "value": "Elantra"
+      },
+      {
+        "id": "3",
+        "value": "Sonata"
+      },
+      {
+        "id": "4",
+        "value": "Tucson"
+      },
+      {
+        "id": "5",
+        "value": "Santa Fe"
+      },
+      {
+        "id": "6",
+        "value": "Palisade"
+      },
+      {
+        "id": "7",
+        "value": "Creta"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Kia",
+    "options": [
+      {
+        "id": "1",
+        "value": "Rio"
+      },
+      {
+        "id": "2",
+        "value": "Ceed"
+      },
+      {
+        "id": "3",
+        "value": "Sportage"
+      },
+      {
+        "id": "4",
+        "value": "Sorento"
+      },
+      {
+        "id": "5",
+        "value": "Seltos"
+      },
+      {
+        "id": "6",
+        "value": "Stinger"
+      },
+      {
+        "id": "7",
+        "value": "Telluride"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Nissan",
+    "options": [
+      {
+        "id": "1",
+        "value": "Micra"
+      },
+      {
+        "id": "2",
+        "value": "Almera"
+      },
+      {
+        "id": "3",
+        "value": "Qashqai"
+      },
+      {
+        "id": "4",
+        "value": "X-Trail"
+      },
+      {
+        "id": "5",
+        "value": "Murano"
+      },
+      {
+        "id": "6",
+        "value": "Pathfinder"
+      },
+      {
+        "id": "7",
+        "value": "Patrol"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Ford",
+    "options": [
+      {
+        "id": "1",
+        "value": "Fiesta"
+      },
+      {
+        "id": "2",
+        "value": "Focus"
+      },
+      {
+        "id": "3",
+        "value": "Mondeo"
+      },
+      {
+        "id": "4",
+        "value": "Kuga"
+      },
+      {
+        "id": "5",
+        "value": "Edge"
+      },
+      {
+        "id": "6",
+        "value": "Explorer"
+      },
+      {
+        "id": "7",
+        "value": "Mustang"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Honda",
+    "options": [
+      {
+        "id": "1",
+        "value": "Civic"
+      },
+      {
+        "id": "2",
+        "value": "Accord"
+      },
+      {
+        "id": "3",
+        "value": "CR-V"
+      },
+      {
+        "id": "4",
+        "value": "HR-V"
+      },
+      {
+        "id": "5",
+        "value": "Pilot"
+      },
+      {
+        "id": "6",
+        "value": "Odyssey"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Tesla",
+    "options": [
+      {
+        "id": "1",
+        "value": "Model S"
+      },
+      {
+        "id": "2",
+        "value": "Model 3"
+      },
+      {
+        "id": "3",
+        "value": "Model X"
+      },
+      {
+        "id": "4",
+        "value": "Model Y"
+      },
+      {
+        "id": "5",
+        "value": "Cybertruck"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Lexus",
+    "options": [
+      {
+        "id": "1",
+        "value": "IS"
+      },
+      {
+        "id": "2",
+        "value": "ES"
+      },
+      {
+        "id": "3",
+        "value": "GS"
+      },
+      {
+        "id": "4",
+        "value": "RX"
+      },
+      {
+        "id": "5",
+        "value": "NX"
+      },
+      {
+        "id": "6",
+        "value": "LX"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Volkswagen",
+    "options": [
+      {
+        "id": "1",
+        "value": "Polo"
+      },
+      {
+        "id": "2",
+        "value": "Golf"
+      },
+      {
+        "id": "3",
+        "value": "Passat"
+      },
+      {
+        "id": "4",
+        "value": "Tiguan"
+      },
+      {
+        "id": "5",
+        "value": "Touareg"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Mazda",
+    "options": [
+      {
+        "id": "1",
+        "value": "Mazda2"
+      },
+      {
+        "id": "2",
+        "value": "Mazda3"
+      },
+      {
+        "id": "3",
+        "value": "Mazda6"
+      },
+      {
+        "id": "4",
+        "value": "CX-3"
+      },
+      {
+        "id": "5",
+        "value": "CX-5"
+      },
+      {
+        "id": "6",
+        "value": "CX-9"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Porsche",
+    "options": [
+      {
+        "id": "1",
+        "value": "911"
+      },
+      {
+        "id": "2",
+        "value": "Boxster"
+      },
+      {
+        "id": "3",
+        "value": "Cayenne"
+      },
+      {
+        "id": "4",
+        "value": "Macan"
+      },
+      {
+        "id": "5",
+        "value": "Panamera"
+      },
+      {
+        "id": "6",
+        "value": "Taycan"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Peugeot",
+    "options": [
+      {
+        "id": "1",
+        "value": "208"
+      },
+      {
+        "id": "2",
+        "value": "308"
+      },
+      {
+        "id": "3",
+        "value": "508"
+      },
+      {
+        "id": "4",
+        "value": "2008"
+      },
+      {
+        "id": "5",
+        "value": "3008"
+      },
+      {
+        "id": "6",
+        "value": "5008"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Chevrolet",
+    "options": [
+      {
+        "id": "1",
+        "value": "Spark"
+      },
+      {
+        "id": "2",
+        "value": "Aveo"
+      },
+      {
+        "id": "3",
+        "value": "Cruze"
+      },
+      {
+        "id": "4",
+        "value": "Malibu"
+      },
+      {
+        "id": "5",
+        "value": "Captiva"
+      },
+      {
+        "id": "6",
+        "value": "Equinox"
+      },
+      {
+        "id": "7",
+        "value": "Traverse"
+      },
+      {
+        "id": "8",
+        "value": "Tahoe"
+      },
+      {
+        "id": "9",
+        "value": "Suburban"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Subaru",
+    "options": [
+      {
+        "id": "1",
+        "value": "Impreza"
+      },
+      {
+        "id": "2",
+        "value": "Legacy"
+      },
+      {
+        "id": "3",
+        "value": "Outback"
+      },
+      {
+        "id": "4",
+        "value": "Forester"
+      },
+      {
+        "id": "5",
+        "value": "XV"
+      },
+      {
+        "id": "6",
+        "value": "Ascent"
+      },
+      {
+        "id": "7",
+        "value": "BRZ"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Jeep",
+    "options": [
+      {
+        "id": "1",
+        "value": "Renegade"
+      },
+      {
+        "id": "2",
+        "value": "Compass"
+      },
+      {
+        "id": "3",
+        "value": "Cherokee"
+      },
+      {
+        "id": "4",
+        "value": "Grand Cherokee"
+      },
+      {
+        "id": "5",
+        "value": "Wrangler"
+      },
+      {
+        "id": "6",
+        "value": "Gladiator"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Land Rover",
+    "options": [
+      {
+        "id": "1",
+        "value": "Defender"
+      },
+      {
+        "id": "2",
+        "value": "Discovery"
+      },
+      {
+        "id": "3",
+        "value": "Freelander"
+      },
+      {
+        "id": "4",
+        "value": "Range Rover Evoque"
+      },
+      {
+        "id": "5",
+        "value": "Range Rover Sport"
+      },
+      {
+        "id": "6",
+        "value": "Range Rover"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Volvo",
+    "options": [
+      {
+        "id": "1",
+        "value": "S40"
+      },
+      {
+        "id": "2",
+        "value": "S60"
+      },
+      {
+        "id": "3",
+        "value": "S80"
+      },
+      {
+        "id": "4",
+        "value": "V40"
+      },
+      {
+        "id": "5",
+        "value": "V60"
+      },
+      {
+        "id": "6",
+        "value": "XC40"
+      },
+      {
+        "id": "7",
+        "value": "XC60"
+      },
+      {
+        "id": "8",
+        "value": "XC90"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Mitsubishi",
+    "options": [
+      {
+        "id": "1",
+        "value": "Mirage"
+      },
+      {
+        "id": "2",
+        "value": "Lancer"
+      },
+      {
+        "id": "3",
+        "value": "Outlander"
+      },
+      {
+        "id": "4",
+        "value": "ASX"
+      },
+      {
+        "id": "5",
+        "value": "Eclipse Cross"
+      },
+      {
+        "id": "6",
+        "value": "Pajero"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Renault",
+    "options": [
+      {
+        "id": "1",
+        "value": "Logan"
+      },
+      {
+        "id": "2",
+        "value": "Sandero"
+      },
+      {
+        "id": "3",
+        "value": "Duster"
+      },
+      {
+        "id": "4",
+        "value": "Kaptur"
+      },
+      {
+        "id": "5",
+        "value": "Arkana"
+      },
+      {
+        "id": "6",
+        "value": "Megane"
+      },
+      {
+        "id": "7",
+        "value": "Scenic"
+      },
+      {
+        "id": "8",
+        "value": "Talisman"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Skoda",
+    "options": [
+      {
+        "id": "1",
+        "value": "Fabia"
+      },
+      {
+        "id": "2",
+        "value": "Rapid"
+      },
+      {
+        "id": "3",
+        "value": "Octavia"
+      },
+      {
+        "id": "4",
+        "value": "Superb"
+      },
+      {
+        "id": "5",
+        "value": "Karoq"
+      },
+      {
+        "id": "6",
+        "value": "Kodiaq"
+      }
+    ]
+  },
+  {
+    "filter": "марка машины",
+    "mark": "Suzuki",
+    "options": [
+      {
+        "id": "1",
+        "value": "Swift"
+      },
+      {
+        "id": "2",
+        "value": "Baleno"
+      },
+      {
+        "id": "3",
+        "value": "Vitara"
+      },
+      {
+        "id": "4",
+        "value": "S-Cross"
+      },
+      {
+        "id": "5",
+        "value": "Jimny"
+      },
+      {
+        "id": "6",
+        "value": "Ignis"
+      }
+    ]
+  }
+]
