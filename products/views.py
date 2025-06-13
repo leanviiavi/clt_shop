@@ -346,7 +346,7 @@ class GetProductsAPI(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request):
-        data = request.POST
+        data = json.loads(request.body)
 
         name = data.get('name') or '-'
         quality = data.get('quality') or 'Новое'
@@ -482,7 +482,7 @@ class ProductsActionsAPI(APIView):
             productId: uuid|str
             action: str
         '''
-        data = request.POST
+        data = json.loads(request.body)
 
         product_id = data.get('productId')
         action = data.get('action') # remove | add
@@ -516,7 +516,7 @@ class CartAPI(APIView):
         '''
             products: [{productId: uuid: str, count: int}]
         '''
-        form_data = request.POST.get('form_data')
+        # form_data = request.POST.get('formData')
         '''
         {
             name: "",
@@ -526,10 +526,12 @@ class CartAPI(APIView):
             promocode: "",
         }
         '''
-        products = request.POST.get('products')
+        # print(request.body)
+        products = json.loads(request.body).get('products')
+        print(products)
         cart = Cart.objects.create()
         for p in products:
-            product = Product.objects.get(id=p['productId'])
+            product = Product.objects.get(id=p['product_id'])
             count = p['count']
 
             product.count -= count

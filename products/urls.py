@@ -25,6 +25,6 @@ urlpatterns = [
     path('categoryes/', CategoryesAPI.as_view(), name='get-create-categoryes'),
     path('subcategoryes/', SubcategoryesAPI.as_view(), name='get-create-subcategoryes'),
     path('productActions/', ProductsActionsAPI.as_view(), name='update-products-count'),
-    path('carts/', CartAPI.as_view(), name='get-create-carts'),
+    path('carts', CartAPI.as_view(), name='get-create-carts'),
     path('filters/', FiltersAPI.as_view(), name='get-filters'),
 ]
