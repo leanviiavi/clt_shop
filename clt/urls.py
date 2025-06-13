@@ -23,5 +23,5 @@ from products.views import to_main
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('admin/', include('main_admin.urls')),
-    path('', include('products.urls')),
+    path('api/', include('products.urls')),
 ]
