@@ -401,3 +401,11 @@ class ProductsActionsAPI(APIView):
         
         product.save()
         return Response({'result': 'success'}, status=status.HTTP_200_OK)
+
+
+class CartAPI(APIView):
+    def get(self, request):
+        ...
+    
+    def post(self, request):
+        ...
