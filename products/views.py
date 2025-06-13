@@ -517,6 +517,15 @@ class CartAPI(APIView):
             products: [{productId: uuid: str, count: int}]
         '''
         form_data = request.POST.get('form_data')
+        '''
+        {
+            name: "",
+            phone: "",
+            address: "",
+            additional_phone: "",
+            promocode: "",
+        }
+        '''
         products = request.POST.get('products')
         cart = Cart.objects.create()
         for p in products:
