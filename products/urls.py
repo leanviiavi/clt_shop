@@ -3,7 +3,7 @@ from django.urls import path
 from products.views import (
     # products_page, create_category, create_subcategory, current_product, to_cart, my_cart,
     # product_remove, product_add, product_delete, bye_cart
-    GetProductsAPI, GetImageAPI, CategoryesAPI, SubcategoryesAPI, ProductsActionsAPI, CartAPI
+    GetProductsAPI, GetImageAPI, CategoryesAPI, SubcategoryesAPI, ProductsActionsAPI, CartAPI, FiltersAPI
 )
 
 
@@ -26,4 +26,5 @@ urlpatterns = [
     path('subcategoryes/', SubcategoryesAPI.as_view(), name='get-create-subcategoryes'),
     path('productActions/', ProductsActionsAPI.as_view(), name='update-products-count'),
     path('carts/', CartAPI.as_view(), name='get-create-carts'),
+    path('filters/', FiltersAPI.as_view(), name='get-filters'),
 ]
