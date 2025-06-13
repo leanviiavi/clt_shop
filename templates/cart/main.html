@@ -1,0 +1,62 @@
+{% extends "main_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="sub-header-m">
+  <a href="/products" class="button-back">Назад</a>
+  
+</div>
+
+<div class="products-cart">
+    <!-- Карточка товара -->
+     
+    <div class="product-cart-panel">
+        {% for item in products %}
+        <div class="product-item">
+            <div class="left-side">
+                <div class="product-cart-img" id="big-image">
+                    {% with item.product.images.all|first as first_image %}
+                    {% if first_image %}
+                        <img src="{% static first_image.file %}" alt="{{ item.product.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default.png' %}" alt="{{ item.product.name }}">
+                    {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+            
+            <div>
+                <h2 class="product-title big">{{ item.product.name }}</h2>
+                <h3 class="product-description big">Описание: {{ item.product.mark }},{{ item.product.model }}<br>Part Number: {{ item.product.vincode }}</h3>
+            </div>
+            <div>
+                <div class="item-actions">
+                    <a href="/products/delete/{{ item.product.id }}"><img src="{% static 'images/x.svg' %}" alt="x" class="x"></a>
+                    <div class="row">
+                        <a href="/products/remove/{{ item.product.id }}"><span>-</span></a>
+                        <h5>{{ item.count }} шт</h5>
+                        <a href="/products/add/{{ item.product.id }}"><span>+</span></a>
+                    </div>
+                    <h3 class="product-price right">{{ item.product.price }}тг</h3>
+                </div>
+            </div>
+      
+        </div>
+        {% endfor %}
+
+        <div class="right big">
+            <div class="row">
+                <h2>Общее количество</h2>
+                <h2>{{ products_count }} шт</h2>
+            </div>
+            <div class="row">
+                <h2>Общаяя стоимость</h2>
+                <h2>{{ products_price }} тг</h2>
+            </div>
+            <div class="row">
+                <a href="/products/bye" class="button">Оформить заказ</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

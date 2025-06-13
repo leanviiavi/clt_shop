@@ -1,0 +1,253 @@
+{% extends "main_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="admin filters">
+    <div class="selectors">
+
+    </div>
+    <a href="/admin/newProduct">Добавить</a>
+</div>
+<div class="row">
+    <div class="category-panel">
+        <form action="/admin/add_new_category" method="POST">
+            <input type="text" id="category_name" name="name" autocomplete="off" placeholder="Название">
+            <input type="submit" value="Создать">
+            {% csrf_token %}
+        </form>
+    </div>
+    <div class="filters-column">
+        <span class="add-category-button">Добавить</span>
+        {% for category in categoryes %}
+        <a href="/admin?filter_category={{ category.id }}" class="category"><span>
+          {{ category.name }}
+        </span></a>
+        
+      {% endfor %}
+    </div>
+    <div class="products-list">
+        {% for product in products %}
+            <div class="product-list-item">
+                <div class="image-with-price">
+                    {% if product.images.all %}
+                        <img src="{% static product.images.all.0.file %}" alt="product-img" class="product-img">
+                    {% else %}
+                        <img src="{% static 'images/default.png' %}" alt="product-img" class="product-img">
+                    {% endif %}
+                    <span class="product-price">
+                        {{ product.price }} тг
+                    </span>
+                </div>
+                <div class="columns-info">
+                    <div class="product-info">
+                        <span>{{ product.name }}</span>
+                        <span>{{ product.part_number }}</span>
+                    </div>
+                    <div class="product-info">
+                        <span>{{ product.mark }}</span>
+                        <span>{{ product.vincode }}</span>
+                    </div>
+                    <div class="product-info">
+                        <span>{{ product.model }}</span>
+                        <span>{{ product.quality }}</span>
+                    </div>
+                    <div class="product-info">
+                        <span>{{ product.generation }}</span>
+                        <span>{{ product.state }}</span>
+                    </div>
+                </div>
+                <div class="item-actions">
+                    <div class="row">
+                        <a href="/admin/remove/{{ product.id }}"><span>-</span></a>
+                        <h5>{{ product.count }} шт</h5>
+                        <a href="/admin/add/{{ product.id }}"><span>+</span></a>
+                    </div>
+                </div>
+                <a href="/admin/delete/{{ product.id }}"><img src="{% static 'images/x.svg' %}" alt="x" class="x"></a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    class Selector{
+        constructor(div, label){
+            this.container = div;
+            this.label = document.createElement('span');
+            this.label.textContent = label;
+            this.dropper = document.createElement('div');
+            this.dropper.setAttribute('class', 'dropper');
+            this.searchPanel = document.createElement('input');
+            this.searchPanel.setAttribute('class', 'search-input');
+            this.searchPanel.setAttribute('placeholder', 'поиск');
+            this.dropper.appendChild(this.searchPanel);
+            this.items = [];
+            this.selected = [];
+            this.checkbox = null;
+        }
+
+        make(items){
+            let selector = document.createElement('div');
+            let checkbox = document.createElement('img');
+            checkbox.setAttribute('src', '{% static "images/no_checked.svg" %}');
+            this.checkbox = checkbox;
+            selector.setAttribute('class', 'selector');
+            selector.appendChild(checkbox);
+            selector.appendChild(this.label);
+            selector.appendChild(this.dropper);
+            this.container.appendChild(selector);
+            this.configure(selector);
+
+            for (let i=0; i<items.length; i++){
+                let item = items[i];
+                let item_b = document.createElement('span');
+                let item_box = document.createElement('img');
+                item_b.setAttribute('class', 'item');
+                item_box.setAttribute('src', '{% static "images/no_checked.svg" %}');
+                item_b.textContent = item;
+                
+                item_b.appendChild(item_box);
+                this.dropper.appendChild(item_b)
+
+                item_b.addEventListener('click', (e)=>{
+                    if (this.items.includes(item_b)){
+                        let index = this.items.indexOf(item_b)
+                        this.items.splice(index, 1)
+                        item_box.setAttribute('src', '{% static "images/no_checked.svg" %}');
+                    }else{
+                        this.items.push(item_b)
+                        item_box.setAttribute('src', '{% static "images/checked.svg" %}');
+                    }
+                })
+            }
+
+            this.searchPanel.addEventListener('keypress', (e)=>{
+                for (let i=0; i<items.length; i++){
+                    if (!items[i].includes(this.searchPanel.value)){
+                        this.dropper.childNodes[i+1].style.display = 'flex';
+                    }else{
+                        this.dropper.childNodes[i+1].style.display = 'none';
+                    }
+                }                
+            })
+        }
+
+        configure(selector){
+            selector.addEventListener('click', (e)=>{
+                const droppers = document.querySelectorAll('.dropper');
+                console.log(droppers)
+                for (let i=0; i<droppers.length; i++){
+                    droppers[i].style.display = 'none';
+                }
+                this.dropper.style.display = 'flex';
+            })
+
+            this.dropper.addEventListener('mouseout', (e)=>{
+                if (!this.dropper.contains(e.relatedTarget)){
+                    this.dropper.style.display = 'none';
+                    if (this.items.length > 0){
+                        this.checkbox.setAttribute('src', '{% static "images/checked.svg" %}')
+                    }else{
+                        this.checkbox.setAttribute('src', '{% static "images/no_checked.svg" %}')
+                    }
+                }
+            })
+        }
+    }
+
+    class Categoryes{
+        constructor(){
+            this.categoryes = document.querySelectorAll('.category');
+            this.category_panel = document.querySelectorAll('.category-panel')
+            this.document.appendChild(this.category_panel);
+        }
+
+        configure(){
+            categoryes.forEach(category=>{
+                category.addEventListener('mouseenter', (e)=>{
+                    
+                })
+            })
+        }
+    }
+    
+    const selectors = document.querySelector('.selectors');
+    selector_mark = new Selector(selectors, 'Марка авто');
+    selector_mark.make(["Abarth", "Acura", "Aeon", "Aiways", "Aixam", "Alfa Romeo", "Alpina",
+  "Alta", "AM General", "AMC", "Ariel", "Armstrong Siddeley", "Arrinera", 
+  "Artega", "Ascari", "Aspark", "Aston Martin", "Audi", "Aurus", "Autobianchi",
+  "BAIC", "Baojun", "BAC", "Bentley", "Bertone", "Bizzarrini", "Bollinger",
+  "Borgward", "Brabus", "Bristol", "Brilliance", "Brooke", "Bufori", "Bugatti",
+  "Buick", "BYD", "Callaway", "Canoo", "Caparo", "Caprice", "Carbodies", "Carlsson",
+  "Casalini", "Caterham", "Changan", "Changfeng", "Chery", "Chevrolet", "Chrysler",
+  "Cisitalia", "Citroën", "Cizeta", "Clenet", "Cupra", "Dacia", "Daewoo",
+  "Daihatsu", "Dallara", "Datsun", "De Tomaso", "DeLorean", "Derways", "Detroit Electric",
+  "Dodge", "Dongfeng", "Drako", "DS Automobiles", "Eagle", "Edsel", "Eicher Polaris",
+  "Elemental", "Elfin", "EMC", "Emgrand", "Emil Frey", "Englon", "Equus", "Eterniti",
+  "Excalibur", "FAW", "Faraday Future", "Ferrari", "Fiat", "Fisker", "Foday",
+  "Force Motors", "Ford", "Foton", "GAC", "Galeon", "Geely", "Genesis", "Gibbs",
+  "Gillet", "Ginetta", "GMC", "Gonow", "Great Wall", "Gumpert", "Hafei", "Haima",
+  "Hanergy", "Haval", "Hennessey", "Hindustan", "Hino", "Holden", "Honda",
+  "Hongqi", "Horch", "Hozon", "Hummer", "Hyundai", "Infiniti", "Iran Khodro",
+  "Isdera", "Isuzu", "Italdesign", "Iveco", "JAC", "Jaguar", "Jeep", "Jensen",
+  "Jetour", "Jetta", "Jinbei", "JMC", "Joylong", "Karma", "Karry", "Kia",
+  "Koenigsegg", "Lada", "Lagonda", "Lamborghini", "Lancia", "Land Rover",
+  "Landwind", "Leapmotor", "Lexus", "Lifan", "Ligier", "Lincoln", "Local Motors",
+  "Lordstown", "Lotus", "Lucid", "Luxgen", "Mahindra", "Man", "Marcos",
+  "Maserati", "Matra", "Maybach", "Mazda", "McLaren", "Mega", "Melkus",
+  "Mercedes-AMG", "Mercedes-Benz", "Mercury", "Metrocab", "Microcar", "MINI",
+  "Mitsuoka", "Mitsubishi", "Mobius Motors", "Morgan", "Morris", "Moskvich",
+  "Nio", "Nissan", "Noble", "NSU", "Oldsmobile", "Omoda", "Opel", "ORA",
+  "Pagani", "Panoz", "Peel", "Perodua", "Peugeot", "PGO", "Pininfarina",
+  "Plymouth", "Polestar", "Pontiac", "Porsche", "Premier", "Proton", "Qoros",
+  "Radical", "Rambler", "RAM", "Ravon", "Reliant", "Renault", "Rezvani", 
+  "Rimac", "Rivian", "Roewe", "Rolls-Royce", "Rover", "Saab", "Sachsenring",
+  "Saleen", "Samsung", "Saturn", "Scion", "SEAT", "Seres", "Shelby",
+  "Shuanghuan", "Simca", "Singer", "Skoda", "Skywell", "Smart", "Soueast",
+  "Spyker", "SsangYong", "Steyr", "Studebaker", "Subaru", "Suzuki", "Talbot",
+  "Tarpan", "Tata", "Tatra", "Tesla", "Toyota", "Trabant", "Traum", "Trion",
+  "Triumph", "TVR", "UAZ", "Ultima", "Vauxhall", "Vencer", "Venucia", "Vector",
+  "VGV", "VinFast", "Volkswagen", "Volvo", "Vortex", "Voyah", "W Motors",
+  "Wanderer", "Wartburg", "Wey", "Westfield", "Willys", "Wuling", "Yugo",
+  "ZAZ", "Zenos", "Zenvo", "Zhongxing", "Zotye", "ZX Auto"]);
+
+    selector_model = new Selector(selectors, 'Модель');
+    selector_model.make(['MODEL 1']);
+
+    selector_model = new Selector(selectors, 'Поколение');
+    selector_model.make(["1950-1955",
+  "1956-1960",
+  "1961-1965",
+  "1966-1970",
+  "1971-1975",
+  "1976-1980",
+  "1981-1985",
+  "1986-1990",
+  "1991-1995",
+  "1996-2000",
+  "2001-2005",
+  "2006-2010",
+  "2011-2015",
+  "2016-2020",
+  "2021-2025"]);
+
+    selector_model = new Selector(selectors, 'Качеcтво');
+    selector_model.make(['Новое', 'б/у']);
+
+    selector_model = new Selector(selectors, 'Состояние');
+    selector_model.make(['Новое', 'б/у']);
+
+
+    const addCategoryButton = document.querySelector('.add-category-button');
+    const categoryPanel = document.querySelector('.category-panel');
+    addCategoryButton.addEventListener('click', (e)=>{
+        categoryPanel.style.display = 'flex';
+    })
+    
+    categoryPanel.addEventListener('mouseout', (e)=>{
+        if (!categoryPanel.contains(e.relatedTarget)){
+            categoryPanel.style.display = 'none';
+        }
+    })
+    
+</script>
+{% endblock %}

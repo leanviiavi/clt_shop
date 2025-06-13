@@ -1,0 +1,170 @@
+{% extends "main_base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .upload-container {
+        background-color: #ff4d4d;
+        /* Красный фон */
+        padding: 2rem;
+        border-radius: 10px;
+        width: 800px;
+        height: 637px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        color: white;
+    }
+
+    .upload-container h2 {
+        margin-top: 0;
+    }
+
+    input[type="file"] {
+        margin-top: 1rem;
+    }
+
+    .image-list {
+        margin-top: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .image-list img {
+        width: 180;
+        height: 180px;
+        object-fit: cover;
+        border: 2px solid white;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="add-product-form">
+    <form action="/admin/add_new_product" method="POST" enctype="multipart/form-data">
+    <div class="upload-container">
+        <h2>Загрузите изображения</h2>
+        <input type="file" id="imageInput" name="images" multiple accept="image/*" />
+        <div class="image-list" id="imageList"></div>
+    </div>
+
+    <div class="product-data">
+        <div class="row">
+            <input type="text" placeholder="Название" name="name" autocomplete="off">
+            <select name="state">
+                <option value="">Состояние</option>
+                <option value="Новое" selected>Новое</option>
+                <option value="б/у">б/у</option>
+            </select>
+        </div>
+
+        <div class="row">
+            <select name="mark">
+                <option value="">Марка авто</option>
+                {% for mark in marks %}
+                <option value="{{ mark }}">{{ mark }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" placeholder="Единица измерения" name="unit" autocomplete="off">
+        </div>
+
+        <div class="row">
+            <input type="text" placeholder="Модель" name="model" autocomplete="off">
+            <input type="number" placeholder="Количество" name="count" autocomplete="off">
+        </div>
+
+        <div class="row">
+            <select name="generation">
+                <option value="">Поколение</option>
+                {% for generation in generations %}
+                <option value="{{ generation }}">{{ generation }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="category">
+                <option value="">Категория</option>
+                {% for category in categoryes %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <input type="text" placeholder="Винкод" name="vincode" autocomplete="off">
+
+            <select name="subcategory">
+                <option value="">Подкатегория</option>
+                {% for subcategory in subcategoryes %}
+                <option value="{{ subcategory.id }}">{{ subcategory.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <select name="quality">
+                <option value="">Качество</option>
+                <option value="Новое">Новое</option>
+                <option value="б/у">б/у</option>
+            </select>
+        </div>
+
+        <div class="row price">
+            <input type="number" placeholder="Цена" name="price" autocomplete="off">
+        </div>
+
+        <div class="row">
+            <div class="empty-input"></div>
+            <div class="empty-input"></div>
+        </div>
+
+        <div class="row">
+            <div class="empty-input"></div>
+            <div class="empty-input"></div>
+        </div>
+
+        <div class="row submit">
+            <div class="empty-input"></div>
+            <input type="submit" value="Добавить">
+        </div>
+
+        {% if error %}
+        <span class="error">{{ error }}</span>
+        {% endif %}
+        {% csrf_token %}
+    </div>
+</form>
+
+</div>
+
+
+<script>
+    const imageInput = document.getElementById('imageInput');
+    const imageList = document.getElementById('imageList');
+    let images = [];
+
+    imageInput.addEventListener('change', (event) => {
+        const files = Array.from(event.target.files);
+
+        files.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                images.push(e.target.result);
+                displayImages();
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+    function displayImages() {
+        imageList.innerHTML = '';
+        images.forEach(src => {
+            const img = document.createElement('img');
+            img.src = src;
+            imageList.appendChild(img);
+        });
+    }
+</script>
+
+
+{% endblock %}

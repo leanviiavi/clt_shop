@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLT - Магазин запчастей</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <div class="left-area">
+            <a href="/admin/auth" class="logo">
+                <img src="{% static 'images/logo.svg' %}" alt="logo">
+            </a>
+        </div>
+        <div class="right-area">
+            <div class="global-link">
+                <a href="/address"><img src="{% static 'images/map-point.svg' %}" alt="address"> Адрес</a>
+            </div>
+            <div class="global-link">
+                <a href="/phone"><img src="{% static 'images/phone.svg' %}" alt="phone"> Телефон</a>
+            </div>
+        </div>
+
+    </header>
+    <div class="container">
+            {% block content %}
+            {% endblock %}
+    </div>
+    <footer>
+        <div class="left-area light-text">
+            <h5>Если не нашли запчасть, пишите нам на WhatsApp</h5>
+            <a href="/whatsapp">
+                <img src="{% static 'images/whatsapp.svg' %}" alt="whatsapp">
+            </a>
+            <a href="/instagram">
+                <img src="{% static 'images/instagram.svg' %}" alt="instagram">
+            </a>
+            <a href="/tiktok">
+                <img src="{% static 'images/tiktok.svg' %}" alt="tiktok">
+            </a>
+        </div>
+        <div class="right-area light-text">
+            <img src="{% static 'images/car.svg' %}" alt="car ">
+            <h5>Доставка по городу Алматы и регионам</h5>
+        </div>
+    </footer>
+</body>
+</html>

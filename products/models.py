@@ -1,0 +1,54 @@
+from django.db import models
+from uuid import uuid4
+
+
+class Category(models.Model):
+    ''' Категория продукции '''
+    id = models.UUIDField(default=uuid4, primary_key=True)
+
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
+
+class Subcategory(models.Model):
+    ''' Подкатегория продукции '''
+    id = models.UUIDField(default=uuid4, primary_key=True)
+
+    name = models.CharField(max_length=64)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+    
+class ProductImage(models.Model):
+    ''' Изображение продукта '''
+    id = models.UUIDField(default=uuid4, primary_key=True)
+
+    file = models.CharField(max_length=256)
+
+
+class Product(models.Model):
+    ''' Продукт '''
+    id = models.UUIDField(default=uuid4, primary_key=True)
+
+    name = models.CharField(max_length=128, default='-', null=True, blank=True)
+    mark = models.CharField(max_length=32, default='-', null=True, blank=True)
+    model = models.CharField(max_length=128, default='-', null=True, blank=True)
+    generation = models.CharField(max_length=16, default='-', null=True, blank=True)
+    vincode = models.CharField(max_length=32, default='-', null=True, blank=True)
+    quality = models.CharField(max_length=16, default='-', null=True, blank=True)
+    state = models.CharField(max_length=32, default='Новое', null=True, blank=True)
+    unit_of_m = models.CharField(max_length=32, default='шт', null=True, blank=True)
+    count = models.IntegerField(default=0)
+    part_number = models.CharField(max_length=32, default='-', null=True, blank=True)
+
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
+
+    price = models.FloatField(default=0.0)
+    images = models.ManyToManyField(ProductImage, 'images')
+    rating = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.name

@@ -1,0 +1,59 @@
+{% extends "main_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="sub-header">
+  <h2>Скорость - наш конек</h2>
+  <div class="search-bar">
+    <form action="/products">
+      <input type="text" id="search-panel" placeholder="поиск" name="search">
+      <input type="submit" hidden>
+    </form>
+  </div>
+  <div class="cart-link">
+    <a href="/products/myCart">
+      <img src="{% static 'images/cart.svg' %}" alt="cart">
+      <div class="cart-counter"><span>{{ cart.products.count }}</span></div>
+    </a>
+  </div> 
+</div>
+<div class="filters">
+  {% for category in categoryes %}
+    <a href="/products?filter_category={{ category.id }}"><span>
+      {{ category.name }}
+    </span></a>
+  {% endfor %}
+</div>
+<div class="title-container">
+  <div class="title">
+    <h2>Популярные товары</h2>
+  </div>
+</div>
+<div class="products">
+  {% for product in products %}
+  {% if product.count > 0 %}
+  <div class="product">
+    {% if product.images.all %}
+      <img src="{% static product.images.all.0.file %}" alt="product-img" class="product-img">
+    {% else %}
+      <img src="{% static 'images/default.png' %}" alt="product-img" class="product-img">
+    {% endif %}
+    <div class="block-info">
+      <h2 class="product-title">{{ product.name }}</h2>
+      <h3 class="product-description">{{ product.mark }},{{ product.model }},{{ product.vincode }}</h3>
+      <h3 class="product-price">{{ product.price }}тг</h3>
+      <div class="product-actions">
+        <a href="/products/{{product.id}}" class="product-link"><span>
+          Смотреть
+        </span></a>
+        <a href="/products/toCart/{{product.id}}"><img src="{% static 'images/cart.svg' %}" alt="to-cart"></a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+</div>
+
+{% endblock %}

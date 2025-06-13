@@ -1,0 +1,86 @@
+{% extends "main_base.html" %}
+{% load static %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="sub-header-m">
+  <a href="/products" class="button-back">Назад</a>
+  <div class="cart-link">
+    <a href="/products/myCart">
+      <img src="{% static 'images/cart.svg' %}" alt="cart">
+      <div class="cart-counter"><span>{{ cart.products.count }}</span></div>
+    </a>
+  </div>  
+</div>
+  <div class="products">
+    <!-- Карточка товара -->
+     
+    <div class="product big">
+        <div class="left-side">
+          <div class="product-img big" id="big-image">
+            {% with product.images.all|first as first_image %}
+              {% if first_image %}
+                <img src="{% static first_image.file %}" alt="{{ product.name }}">
+              {% else %}
+                <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
+              {% endif %}
+            {% endwith %}
+          </div>
+          <div class="sub-images" id="small-image">
+            {% for image in product.images.all %}
+              {% if image.file %}
+                <img src="{% static image.file %}" alt="{{ product.name }}">
+              {% else %}
+                <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
+              {% endif %}
+            {% endfor %}
+          </div>
+        
+        </div>
+        
+        <div class="right-side">
+          <h2 class="product-title big">{{ product.name }}</h2>
+          <h3 class="product-description big">Описание: {{ product.mark }},{{ product.model }}<br>Part Number: {{ product.vincode }}</h3>
+          <h3 class="product-price big">{{ product.price }}тг</h3>
+          <a href="/products/toCart/{{product.id}}"><img src="{% static 'images/cart.svg' %}" alt="to-cart"></a>
+        </div>
+        
+        
+      
+    </div>
+    
+  </div>
+  <div class="products">
+  {% for product in products %}
+  <div class="product">
+    {% if product.images.all %}
+      <img src="{% static product.images.all.0.file %}" alt="product-img" class="product-img">
+    {% else %}
+      <img src="{% static 'images/default.png' %}" alt="product-img" class="product-img">
+    {% endif %}
+    <h2 class="product-title">{{ product.name }}</h2>
+    <h3 class="product-description">{{ product.mark }},{{ product.model }},{{ product.vincode }}</h3>
+    <h3 class="product-price">{{ product.price }}тг</h3>
+    <div class="product-actions">
+      <a href="/products/{{product.id}}" class="product-link"><span>
+        Смотреть
+      </span></a>
+      <a href="/products/toCart/{{product.id}}"><img src="{% static 'images/cart.svg' %}" alt="to-cart"></a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+  // переключение главного изображения
+  const bigImage = document.querySelector('#big-image').getElementsByTagName('img')[0]
+  const smallImages = document.querySelector('#small-image').getElementsByTagName('img')
+
+  for (let i=0; i<smallImages.length; i++){
+    smallImages[i].addEventListener('click', (e)=>{
+      bigImage.src = smallImages[i].src
+    })
+  }
+</script>
+
+{% endblock %}
