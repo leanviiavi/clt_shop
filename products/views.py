@@ -17,6 +17,9 @@ import os
 from uuid import uuid4
 import json
 import jwt
+from dotenv import load_dotenv
+
+load_dotenv()
 
 MARKS: list[str] = [
     "Abarth", "Acura", "Aeon", "Aiways", "Aixam", "Alfa Romeo", "Alpina",
