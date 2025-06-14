@@ -663,5 +663,7 @@ class SearchAPI(APIView):
         return Response({'result': 'success'}, status=status.HTTP_201_CREATED)
     
     def get(self, request):
-        searches = Search.objects.all()
-        
+        searches = Search.get_top_search_queries(limit=100)
+
+        return Response({'result': searches}, status=status.HTTP_200_OK)
+

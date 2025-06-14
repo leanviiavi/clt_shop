@@ -4,7 +4,7 @@ from products.views import (
     # products_page, create_category, create_subcategory, current_product, to_cart, my_cart,
     # product_remove, product_add, product_delete, bye_cart
     GetProductsAPI, GetImageAPI, CategoryesAPI, SubcategoryesAPI, ProductsActionsAPI, CartAPI, FiltersAPI,
-    AdminAuthAPI, StatisticAPI,
+    AdminAuthAPI, StatisticAPI, SearchAPI,
 )
 
 
@@ -30,4 +30,5 @@ urlpatterns = [
     path('filters/', FiltersAPI.as_view(), name='get-filters'),
     path('admin/auth', AdminAuthAPI.as_view(), name='admin-auth'),
     path('statistic', StatisticAPI.as_view(), name='admin-statistic'),
+    path('search', SearchAPI.as_view(), name='admin-search'),
 ]
