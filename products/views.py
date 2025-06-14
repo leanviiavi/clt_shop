@@ -18,6 +18,7 @@ from uuid import uuid4
 import json
 import jwt
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv()
 
@@ -517,9 +518,9 @@ class CartAPI(APIView):
     def get(self, request):
         ''' cartId: uuid|str '''
         if cart_id := request.GET.get('cartId'):
-            carts = Subcategory.objects.filter(id=cart_id)
+            carts = Cart.objects.filter(id=cart_id)
         else:
-            carts = Subcategory.objects.all()
+            carts = Cart.objects.all()
 
         serializer = CartSerializer(carts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -632,3 +633,21 @@ class AdminAuthAPI(APIView):
             return Response({'token': token}, status=status.HTTP_200_OK)
         
         return Response({'error': 'Unauthorized exception'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+
+class StatisticAPI(APIView):
+    def get(self, request):
+        carts = Cart.objects.all()
+        parts = {}
+        dates = [cart.date.strftime('%d %m %Y') for cart in carts]
+        dates = list(set(dates))
+
+        for date in dates:
+            for cart in carts:
+                if date == cart.date.strftime('%d %m %Y'):
+                    if not parts.get(date):
+                        parts[date] = 0
+                    parts[date] += 1
+        
+        return Response({'result': parts}, status=status.HTTP_200_OK)
+        
