@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, FileResponse
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-from .models import Category, Subcategory, Product, ProductImage
+from .models import Category, Subcategory, Product, ProductImage, Search
 from cart.models import Cart, Order
 from .errors import *
 from .utils import open_session
@@ -650,4 +650,18 @@ class StatisticAPI(APIView):
                     parts[date] += 1
         
         return Response({'result': parts}, status=status.HTTP_200_OK)
+        
+
+class SearchAPI(APIView):
+    def post(self, request):
+        ''' search: str '''
+        data = json.loads(request.body)
+
+        search_text = data.get('search')
+        search = Search.objects.create(text=search_text)
+
+        return Response({'result': 'success'}, status=status.HTTP_201_CREATED)
+    
+    def get(self, request):
+        searches = Search.objects.all()
         

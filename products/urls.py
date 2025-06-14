@@ -21,10 +21,10 @@ urlpatterns = [
     # path('add/<uuid:product_id>', product_add, name='product_add'),
     # path('bye', bye_cart, name='bye_cart')
 
-    path('products/', GetProductsAPI.as_view(), name='get-create-products'),
+    path('products', GetProductsAPI.as_view(), name='get-create-products'),
     path('image/', GetImageAPI.as_view(), name='get-image'),
     path('categoryes/', CategoryesAPI.as_view(), name='get-create-categoryes'),
-    path('subcategoryes/', SubcategoryesAPI.as_view(), name='get-create-subcategoryes'),
+    path('subcategoryes', SubcategoryesAPI.as_view(), name='get-create-subcategoryes'),
     path('productActions/', ProductsActionsAPI.as_view(), name='update-products-count'),
     path('carts', CartAPI.as_view(), name='get-create-carts'),
     path('filters/', FiltersAPI.as_view(), name='get-filters'),

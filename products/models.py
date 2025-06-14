@@ -1,5 +1,6 @@
 from django.db import models
 from uuid import uuid4
+from datetime import datetime
 
 
 class Category(models.Model):
@@ -52,3 +53,28 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Search(models.Model):
+    ''' Поисковый запрос '''
+    id = models.UUIDField(default=uuid4, primary_key=True)
+
+    date = models.DateTimeField(default=datetime.now, blank=True)
+    text = models.CharField(max_length=128, default='', null=True, blank=True)
+
+    def get_top_search_queries(limit=10):
+        """
+        Возвращает список самых популярных поисковых запросов.
+        
+        :param limit: количество самых популярных запросов, по умолчанию 10
+        :return: список словарей с ключами 'text' и 'count'
+        """
+        top_queries = (
+            Search.objects
+            .filter(text__isnull=False)  # исключаем пустые или None значения
+            .exclude(text='')           # исключаем пустые строки
+            .values('text')
+            .annotate(count=models.Count('text'))
+            .order_by('-count')[:limit]
+        )
+        return list(top_queries)
