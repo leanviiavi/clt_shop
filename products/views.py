@@ -347,6 +347,7 @@ class GetProductsAPI(APIView):
         if filter_state:
             products = products.filter(state=filter_state)
         if search:
+            search_object = Search.objects.create(text=search)
             products = products.filter(Q(name__icontains=search) | Q(mark__icontains=search) | Q(model__icontains=search))
 
         serializer = ProductSerializer(products, many=True)
