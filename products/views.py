@@ -350,7 +350,7 @@ class GetProductsAPI(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request):
-        data = json.loads(request.body)
+        data = request.POST
         if access_token := data.get('access_token'):
             if p := jwt.decode(access_token, 'test_admin_key'):
                 if not p.get('is_admin'):
