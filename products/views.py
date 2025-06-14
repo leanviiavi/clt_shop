@@ -318,7 +318,8 @@ class GetProductsAPI(APIView):
         else:
             products = Product.objects.all()
 
-        filter_name = request.GET.get('filter_name')
+        search = request.GET.get('searchText')
+        filter_name = request.GET.get('name')
         filter_category = request.GET.get('categoryId')
         filter_subcategory = request.GET.get('subcategoryId')
         filter_mark = request.GET.get('mark')
@@ -345,6 +346,8 @@ class GetProductsAPI(APIView):
             products = products.filter(quality=filter_quality)
         if filter_state:
             products = products.filter(state=filter_state)
+        if search:
+            products = products.filter(Q(name__icontains=search) | Q(mark__icontains=search) | Q(model__icontains=search))
 
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
