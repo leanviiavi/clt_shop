@@ -355,6 +355,8 @@ class GetProductsAPI(APIView):
             if p := jwt.decode(access_token, 'test_admin_key'):
                 if not p.get('is_admin'):
                     return Response({'error': 'Unauthorized exception'}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response({'error': 'Unauthorized exception'}, status=status.HTTP_401_UNAUTHORIZED)
 
         name = data.get('name') or '-'
         quality = data.get('quality') or 'Новое'
