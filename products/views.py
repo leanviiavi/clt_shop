@@ -466,19 +466,19 @@ class SubcategoryesAPI(APIView):
 
     def post(self, request):
         ''' categoryId: uuid|str '''
-        if access_token := request.GET.get('access_token'):
+        if access_token := json.loads(request.body).get('access_token'):
             if p := jwt.decode(access_token, 'test_admin_key'):
                 if not p.get('is_admin'):
                     return Response({'error': 'Unauthorized exception'}, status=status.HTTP_401_UNAUTHORIZED)
                 
-        category_id = request.GET.get('categoryId')
+        category_id = json.loads(request.body).get('categoryId')
         
         try:
             category = Category.objects.get(id=category_id)
         except:
             return Response({'error': 'category not found'}, status=status.HTTP_404_NOT_FOUND)
         
-        if name := request.GET.get('subcategoryName'):
+        if name := json.loads(request.body).get('subcategoryName'):
             subcategory = Subcategory.objects.create(name=name, category=category)
             return Response({'result': 'success', 'subcategoryId': str(subcategory.id)}, status=status.HTTP_201_CREATED)
         else:
