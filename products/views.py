@@ -289,6 +289,36 @@ def submit_bye(cart, data):
     cart.products.set([])
 
 
+def search_queryset(queryset, search_query):
+    from django.db.models import Q, CharField, TextField
+
+    model = queryset.model
+
+    if not search_query:
+        return queryset.none()
+
+    search_words = search_query.strip().split()
+    search_words = [*search_words, *[x.capitalize() for x in search_words], *[x.lower() for x in search_words], *[x.upper() for x in search_words]]
+    print(search_words)
+    text_fields = [
+        field.name for field in model._meta.get_fields()
+        if isinstance(field, (CharField, TextField))
+    ]
+
+    print("Поиск по полям:", text_fields)
+
+    if not text_fields:
+        return queryset.none()
+
+    query = Q()
+    for word in search_words:
+        word_q = Q()
+        for field in text_fields:
+            word_q |= Q(**{f"{field}__icontains": word})
+        query |= word_q  # замените на |= для поиска хотя бы одного слова
+    return queryset.filter(query).distinct()
+
+
 class ProductSerializer(ModelSerializer):
     class Meta:
         model = Product
@@ -348,7 +378,8 @@ class GetProductsAPI(APIView):
             products = products.filter(state=filter_state)
         if search:
             search_object = Search.objects.create(text=search)
-            products = products.filter(Q(name__icontains=search) | Q(mark__icontains=search) | Q(model__icontains=search))
+            # search = search.lower()
+            products = search_queryset(products, search)
 
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -373,6 +404,7 @@ class GetProductsAPI(APIView):
         state = data.get('state') or '-'
         price = data.get('price') or 0
         unit = data.get('unit') or 'шт'
+        part_number = data.get('partNumber') or '-'
 
         if not category or not subcategory:
             return Response({'error': 'Не все поля заполнены'}, status=status.HTTP_409_CONFLICT)
@@ -410,7 +442,8 @@ class GetProductsAPI(APIView):
                                         vincode=vincode,
                                         state=state,
                                         price=price,
-                                        unit_of_m=unit)
+                                        unit_of_m=unit,
+                                        part_number=part_number)
         
         for image in saved_files:
             product.images.add(image)
@@ -481,19 +514,27 @@ class SubcategoryesAPI(APIView):
                 if not p.get('is_admin'):
                     return Response({'error': 'Unauthorized exception'}, status=status.HTTP_401_UNAUTHORIZED)
                 
-        category_id = json.loads(request.body).get('categoryId')
+        category_id = json.loads(request.body)
+        category_id = category_id.get('categoryId')
         
         try:
             category = Category.objects.get(id=category_id)
         except:
             return Response({'error': 'category not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-        if name := json.loads(request.body).get('subcategoryName'):
+        data = json.loads(request.body)
+        if name := data.get('name'):
             subcategory = Subcategory.objects.create(name=name, category=category)
             return Response({'result': 'success', 'subcategoryId': str(subcategory.id)}, status=status.HTTP_201_CREATED)
         else:
             return Response({'error': 'name field is required'}, status=status.HTTP_409_CONFLICT)
 
+    def delete(self, request):
+        ''' subcategoryId: str '''
+        if subcategory_id := request.GET.get('subcategoryId'):
+            subcategory = Subcategory.objects.get(id=subcategory_id)
+            subcategory.delete()
+        return Response({'result': 'success'}, status=status.HTTP_201_CREATED)
+        
 
 class ProductsActionsAPI(APIView):
     def post(self, request):

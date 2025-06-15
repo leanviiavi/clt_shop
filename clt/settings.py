@@ -75,10 +75,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'clt.wsgi.application'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://f46cf44da7f5720be8048f8bb379e29d.serveo.net",
+    "https://0354-5-34-108-3.ngrok-free.app",
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.ngrok-free.app',
+    "https://f46cf44da7f5720be8048f8bb379e29d.serveo.net",
+    "https://0354-5-34-108-3.ngrok-free.app",
 ]
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
