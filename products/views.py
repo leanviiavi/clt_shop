@@ -399,12 +399,15 @@ class GetProductsAPI(APIView):
         model = data.get('model') or '-'
         count = data.get('count') or 0
         category = data.get('category') or None
+        generation = data.get('generation') or '-'
         subcategory = data.get('subcategory') or None
         vincode = data.get('vincode') or '-'
         state = data.get('state') or '-'
         price = data.get('price') or 0
         unit = data.get('unit') or 'шт'
         part_number = data.get('partNumber') or '-'
+
+        mark, model = mark.lower(), model.lower()
 
         if not category or not subcategory:
             return Response({'error': 'Не все поля заполнены'}, status=status.HTTP_409_CONFLICT)
@@ -443,7 +446,8 @@ class GetProductsAPI(APIView):
                                         state=state,
                                         price=price,
                                         unit_of_m=unit,
-                                        part_number=part_number)
+                                        part_number=part_number,
+                                        generation=generation)
         
         for image in saved_files:
             product.images.add(image)
@@ -534,7 +538,7 @@ class SubcategoryesAPI(APIView):
             subcategory = Subcategory.objects.get(id=subcategory_id)
             subcategory.delete()
         return Response({'result': 'success'}, status=status.HTTP_201_CREATED)
-        
+    
 
 class ProductsActionsAPI(APIView):
     def post(self, request):
@@ -610,9 +614,32 @@ class FiltersAPI(APIView):
         with open('car_models_extended.json') as f:
             models = json.loads(f.read())
 
+        products = Product.objects.all()
         models_ = {}
-        for model in models:
-            models_[model['mark']] = model['options']
+
+
+
+        for product in products:
+            if product.mark:
+                if not product.mark.lower().strip() in models_:
+                    models_[product.mark.lower().strip()] = []
+            if product.model and models_[product.mark.lower().strip()] != None:
+                current_model = {
+                    'id': len( models_[product.mark.lower().strip()]) + 1,
+                    'value': product.model.lower().strip()
+                }
+                if not current_model in models_[product.mark.lower().strip()]:
+                    models_[product.mark.lower().strip()].append(
+                        current_model
+                    )
+        
+        # for model in models:
+        #     models_[model['mark']] = model['options']
+        print(models_)
+
+        generations = list(set([
+            product.generation.lower().strip() for product in products
+        ]))
 
         return Response(
             [
@@ -637,7 +664,7 @@ class FiltersAPI(APIView):
                         {
                             'id': index,
                             'value': value
-                        } for index, value in enumerate(GENERATIONS)
+                        } for index, value in enumerate(generations)
                     ]
                 },
                 {
