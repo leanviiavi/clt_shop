@@ -456,7 +456,7 @@ class GetProductsAPI(APIView):
         return Response({'result': 'success', 'productId': str(product.id)}, status=status.HTTP_201_CREATED)
     
     def patch(self, request):
-        data = request.POST
+        data = request.body
         if access_token := data.get('access_token'):
             if p := jwt.decode(access_token, 'test_admin_key'):
                 if not p.get('is_admin'):
