@@ -503,7 +503,7 @@ class GetProductsAPI(APIView):
         product.unit_of_m = unit
         product.part_number = part_number
 
-        product_images = product.images
+        product_images = product.images.all()
         for image in product_images:
             if not str(image.id) in image_ids:
                 product.images.remove(image)  
