@@ -455,6 +455,88 @@ class GetProductsAPI(APIView):
 
         return Response({'result': 'success', 'productId': str(product.id)}, status=status.HTTP_201_CREATED)
     
+    def update(self, request):
+        data = request.POST
+        if access_token := data.get('access_token'):
+            if p := jwt.decode(access_token, 'test_admin_key'):
+                if not p.get('is_admin'):
+                    return Response({'error': 'Unauthorized exception'}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response({'error': 'Unauthorized exception'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        product_id = data.get('productId')
+        name = data.get('name') or '-'
+        quality = data.get('quality') or 'Новое'
+        mark = data.get('mark') or '-'
+        model = data.get('model') or '-'
+        count = data.get('count') or 0
+        category = data.get('category') or None
+        generation = data.get('generation') or '-'
+        subcategory = data.get('subcategory') or None
+        vincode = data.get('vincode') or '-'
+        state = data.get('state') or '-'
+        price = data.get('price') or 0
+        unit = data.get('unit') or 'шт'
+        part_number = data.get('partNumber') or '-'
+        image_ids = data.get('imageId')
+
+        mark, model = mark.lower(), model.lower()
+
+        if not category or not subcategory:
+            return Response({'error': 'Не все поля заполнены'}, status=status.HTTP_409_CONFLICT)
+        
+        category = Category.objects.get(id=category)
+        subcategory = Subcategory.objects.get(id=subcategory)
+        product = Product.objects.get(id=product_id)
+
+        product.name = name
+        product.quality = quality
+        product.mark = mark
+        product.count = count
+        product.category = category
+        product.generation = generation
+        product.subcategory = subcategory
+        product.vincode = vincode
+        product.state = state
+        product.price = price
+        product.unit_of_m = unit
+        product.part_number = part_number
+
+        product_images = product.images
+        for image in product_images:
+            if not str(image.id) in image_ids:
+                product.images.remove(image)  
+
+        images = request.FILES.getlist('images')
+
+        saved_files = []
+
+        for image in images:
+            # Генерируем уникальное имя файла (например UUID)
+            extension = os.path.splitext(image.name)[1]  # .jpg, .png
+            filename = f"{uuid4()}{extension}"
+            file_path = os.path.join('static/uploaded/', filename)
+
+            # Сохраняем файл на диск
+            with open(file_path, 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
+
+            file_path = file_path.replace('static/','')
+            # Сохраняем пути для дальнейшей работы
+            # saved_files.append(os.path.join('uploads', filename))
+            product_image = ProductImage.objects.create(file=file_path)
+            saved_files.append(product_image)
+
+        for file in saved_files:
+            product.images.add(file)
+            
+        product.save()
+
+        return Response({'result': f'product {product_id} update success'})
+
+
+
     def delete(self, request):
         ''' productId: uuid|str '''
         if product_id := request.GET.get('productId'):

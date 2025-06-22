@@ -75,12 +75,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'clt.wsgi.application'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://7f1ee205d191b99de9daf4d7b1439da1.serveo.net",
-    "https://1923-5-34-72-60.ngrok-free.app",
+    "http://localhost:3001",
+    "http://185.125.88.182:8003"
 ]
 CSRF_TRUSTED_ORIGINS = [
-    "https://7f1ee205d191b99de9daf4d7b1439da1.serveo.net",
-    "https://1923-5-34-72-60.ngrok-free.app",
+
 ]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
