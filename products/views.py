@@ -22,7 +22,7 @@ from datetime import datetime
 
 load_dotenv()
 
-MARKS: list[str] = [
+MARKS = [
     "Abarth", "Acura", "Aeon", "Aiways", "Aixam", "Alfa Romeo", "Alpina",
   "Alta", "AM General", "AMC", "Ariel", "Armstrong Siddeley", "Arrinera", 
   "Artega", "Ascari", "Aspark", "Aston Martin", "Audi", "Aurus", "Autobianchi",
@@ -62,7 +62,7 @@ MARKS: list[str] = [
   "ZAZ", "Zenos", "Zenvo", "Zhongxing", "Zotye", "ZX Auto"
 ]
 
-GENERATIONS: list[str] = [
+GENERATIONS = [
     "1950-1955",
     "1956-1960",
     "1961-1965",
@@ -530,7 +530,7 @@ class GetProductsAPI(APIView):
 
         for file in saved_files:
             product.images.add(file)
-            
+
         product.save()
 
         return Response({'result': f'product {product_id} update success'})
