@@ -505,6 +505,7 @@ class GetProductsAPI(APIView):
 
         product_images = product.images.all()
         for image in product_images:
+            print(str(image.id), image_ids)
             if not str(image.id) in image_ids:
                 product.images.remove(image)  
 
