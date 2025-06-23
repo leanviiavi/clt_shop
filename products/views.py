@@ -503,6 +503,8 @@ class GetProductsAPI(APIView):
         product.unit_of_m = unit
         product.part_number = part_number
 
+        print('img ids', image_ids)
+
         product_images = product.images.all()
         for image in product_images:
             print(str(image.id), image_ids)
