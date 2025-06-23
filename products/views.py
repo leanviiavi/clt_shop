@@ -479,7 +479,7 @@ class GetProductsAPI(APIView):
         price = data.get('price') or 0
         unit = data.get('unit') or 'шт'
         part_number = data.get('partNumber') or '-'
-        image_ids = data.getList('imageId')
+        image_ids = data.getlist('imageId')
 
         mark, model = mark.lower(), model.lower()
 
