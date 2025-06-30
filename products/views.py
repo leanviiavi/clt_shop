@@ -827,4 +827,4 @@ class SearchAPI(APIView):
 
         return Response({'result': searches}, status=status.HTTP_200_OK)
 
-Product.upload_from_parts(name='parts.xlsx')
+# Product.upload_from_parts(name='parts.xlsx')
