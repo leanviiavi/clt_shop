@@ -723,7 +723,7 @@ class FiltersAPI(APIView):
         #     models_[model['mark']] = model['options']
         result = {}
 
-        for brand, items in data.items():
+        for brand, items in models.items():
             seen = set()
             unique_items = []
             for item in items:
