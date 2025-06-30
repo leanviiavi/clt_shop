@@ -53,6 +53,53 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+    @staticmethod
+    def upload_from_parts(name: str):
+        import pandas as pd
+        Product.objects.all().delete()
+        df = pd.read_excel("parts.xlsx")
+        desired_columns = df.columns.tolist()
+        parts_list = df.to_dict(orient="records")
+
+        # desired_columns = [
+        #     'Партномер запчасти', 'Марка авто', 'Модель авто', 'Название запчасти',
+        #     'Категория', 'Подкатегория', 'Качество', 'Состояние',
+        #     'Поколение', 'Единица изм', 'Винкод', 'Цена', 'Количество'
+        # ]
+
+        df = pd.read_excel(name, usecols=desired_columns)
+        parts_list = df.to_dict(orient="records") 
+        for part in parts_list:
+            if not Category.objects.filter(name=part['Категория']):
+                category = Category.objects.create(name=part['Категория'])
+            else:
+                category = Category.objects.get(name=part['Категория'])
+
+            if not Subcategory.objects.filter(name=part['Подкатегория']):
+                subcategory = Subcategory.objects.create(name=part['Подкатегория'], category=category)
+            else:
+                subcategory = Subcategory.objects.get(name=part['Подкатегория'])
+
+            
+            product = Product.objects.create(
+                name=part['Название запчасти'],
+                mark=part['Марка авто'],
+                model=part['Модель авто'],
+                generation=part['Поколение'],
+                vincode=part['Винкод'],
+                quality=part['Качество'],
+                state=part['Состояние'],
+                unit_of_m=part['Еденица измерения'],
+                count=1,
+                part_number=part['Партномер запчасти'],
+                rating=0,
+                category=category,
+                subcategory=subcategory,
+            )
+            product.images.set(ProductImage.objects.filter(id='0267be89-a0c0-45e1-be5e-0944a4baf36c'))
+
+            print(f'uploaded {product.id}')
 
 
 class Search(models.Model):
