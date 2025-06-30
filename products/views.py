@@ -733,7 +733,7 @@ class FiltersAPI(APIView):
                     unique_items.append(item)
             result[brand] = unique_items
 
-        models = result
+        models_ = result
 
         generations = list(set([
             product.generation.lower().strip() for product in products
