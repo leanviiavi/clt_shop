@@ -721,7 +721,19 @@ class FiltersAPI(APIView):
         
         # for model in models:
         #     models_[model['mark']] = model['options']
-        print(models_)
+        result = {}
+
+        for brand, items in data.items():
+            seen = set()
+            unique_items = []
+            for item in items:
+                val = item['value']
+                if val not in seen:
+                    seen.add(val)
+                    unique_items.append(item)
+            result[brand] = unique_items
+
+        models = result
 
         generations = list(set([
             product.generation.lower().strip() for product in products
