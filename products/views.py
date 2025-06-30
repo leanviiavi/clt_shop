@@ -367,9 +367,9 @@ class GetProductsAPI(APIView):
             subcategory = Subcategory.objects.get(id=filter_subcategory)
             products = products.filter(subcategory=subcategory)
         if filter_mark:
-            products = products.filter(mark=filter_mark)
+            products = products.filter(mark=filter_mark.upper())
         if filter_model:
-            products = products.filter(model=filter_model)
+            products = products.filter(model=filter_model.upper())
         if filter_generation:
             products = products.filter(generation=filter_generation)
         if filter_quality:
