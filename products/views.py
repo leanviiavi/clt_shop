@@ -676,7 +676,7 @@ class CartAPI(APIView):
             promocode: "",
         }
         '''
-        # print(request.body)
+        print(json.loads(request.body))
         products = json.loads(request.body).get('products')
         print(products)
         cart = Cart.objects.create()
