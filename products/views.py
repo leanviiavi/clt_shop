@@ -666,7 +666,7 @@ class CartAPI(APIView):
         '''
             products: [{productId: uuid: str, count: int}]
         '''
-        # form_data = request.POST.get('formData')
+        
         '''
         {
             name: "",
@@ -676,20 +676,50 @@ class CartAPI(APIView):
             promocode: "",
         }
         '''
-        print(json.loads(request.body))
-        products = json.loads(request.body).get('products')
-        print(products)
+        data = json.loads(request.body)
+        products = data.get('products')
+        name = data.get('name')
+        phone = data.get('phone')
+        additional_phone = data.get('dop_phone')
+        address = data.get('address')
+        promocode = data.get('promocode')
+        vincode = data.get('vincode')
+        all_price = 0
+        now = datetime.now().strftime('%d-%m-%Y %H:%M')
+        
+
         cart = Cart.objects.create()
-        for p in products:
+        carts_length = len(Cart.objects.all())
+        description = f'Заказ №{carts_length} от {now}\n\n'
+        for index, p in enumerate(products):
             product = Product.objects.get(id=p['product_id'])
             count = p['count']
 
             product.count -= count
             product.save()
 
+            all_price += product.price
+
             order = Order.objects.create(product=product, count=count)
             cart.products.add(order)
             cart.save()
+
+            description += f'''{index}. {product.part_number} {product.mark} {product.model} {product.name} {p["count"]}{product.unit_of_m} {p["count"] * product.price}\n'''
+
+        description += f'''\nОбщая сумма {all_price}'''
+        description += f'''\nИмя: {name}'''
+        description += f'''\nНомер WhatsApp: {phone}'''
+        description += f'''\nДополнительный номер: {additional_phone}'''
+        description += f'''\nАдрес доставки: {address}'''
+        description += f'''\nVINCODE: {vincode}'''
+        description += f'''\nПромокод: {promocode}''' if promocode else f'''\nПромокод: Отсутствует'''
+
+        telegram_account = os.getenv('TELEGRAM_ACCOUNT')
+        telegram_token = os.getenv('TELEGRAM_TOKEN')
+
+        from telebot import TeleBot
+        app = TeleBot(token=telegram_token)
+        app.send_message(telegram_account, text=description)
         
         return Response({'result': 'success', 'cartId': str(cart.id)})
     
