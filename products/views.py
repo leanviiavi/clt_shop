@@ -80,6 +80,19 @@ GENERATIONS = [
     "2021-2025"
 ]
 
+PROMO_CODES = {
+    'clt5': 5,
+    'clt7': 7,
+    'clt10': 10,
+    'clt12': 12,
+    'clt15': 15,
+}
+
+def calculate_discounted_price(original_price, discount_percent):
+    discount_amount = original_price * (discount_percent / 100)
+    discounted_price = original_price - discount_amount
+    return discounted_price, discount_amount
+
 def to_main(request):
     return HttpResponseRedirect('/products')
 
@@ -686,7 +699,6 @@ class CartAPI(APIView):
         vincode = data.get('vincode')
         all_price = 0
         now = datetime.now().strftime('%d-%m-%Y %H:%M')
-        
 
         cart = Cart.objects.create()
         carts_length = len(Cart.objects.all())
@@ -704,9 +716,14 @@ class CartAPI(APIView):
             cart.products.add(order)
             cart.save()
 
-            description += f'''{index}. {product.part_number} {product.mark} {product.model} {product.name} {p["count"]}{product.unit_of_m} {p["count"] * product.price}\n'''
+            description += f'''{index + 1}. {product.part_number} {product.mark} {product.model} {product.name} {p["count"]}{product.unit_of_m} {p["count"] * product.price}\n'''
+            
+        description += f'''\nОбщая сумма без скидки {all_price}'''
+        all_price_with_code = all_price
+        if promocode in PROMO_CODES:
+            all_price_with_code, discount = calculate_discounted_price(all_price, PROMO_CODES[promocode])
 
-        description += f'''\nОбщая сумма {all_price}'''
+        description += f'''\nИтоговая сумма со скидкой {int(all_price_with_code)}'''
         description += f'''\nИмя: {name}'''
         description += f'''\nНомер WhatsApp: {phone}'''
         description += f'''\nДополнительный номер: {additional_phone}'''
