@@ -737,8 +737,11 @@ class CartAPI(APIView):
         from telebot import TeleBot
         app = TeleBot(token=telegram_token)
         for account in telegram_account:
-            app.send_message(account, text=description)
-        
+            try:
+                app.send_message(account, text=description)
+            except Exception as e:
+                print(e)
+
         return Response({'result': 'success', 'cartId': str(cart.id)})
     
 
