@@ -731,12 +731,13 @@ class CartAPI(APIView):
         description += f'''\nVINCODE: {vincode}'''
         description += f'''\nПромокод: {promocode}''' if promocode else f'''\nПромокод: Отсутствует'''
 
-        telegram_account = os.getenv('TELEGRAM_ACCOUNT')
+        telegram_account = json.loads(os.getenv('TELEGRAM_ACCOUNT'))
         telegram_token = os.getenv('TELEGRAM_TOKEN')
 
         from telebot import TeleBot
         app = TeleBot(token=telegram_token)
-        app.send_message(telegram_account, text=description)
+        for account in telegram_account:
+            app.send_message(account, text=description)
         
         return Response({'result': 'success', 'cartId': str(cart.id)})
     
