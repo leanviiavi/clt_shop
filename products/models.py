@@ -76,10 +76,10 @@ class Product(models.Model):
             else:
                 category = Category.objects.get(name=part['Категория'])
 
-            if not Subcategory.objects.filter(name=part['Подкатегория']):
+            if not Subcategory.objects.filter(name=part['Подкатегория'], category=category):
                 subcategory = Subcategory.objects.create(name=part['Подкатегория'], category=category)
             else:
-                subcategory = Subcategory.objects.get(name=part['Подкатегория'])
+                subcategory = Subcategory.objects.get(name=part['Подкатегория'], category=category)
 
             
             product = Product.objects.create(
