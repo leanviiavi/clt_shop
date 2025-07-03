@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'clt.wsgi.application'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001",
-    "http://185.125.88.182:8003"
+    "http://185.125.88.182:8003",
     "http://cltshop.kz",
     "https://cltshop.kz",
 ]
