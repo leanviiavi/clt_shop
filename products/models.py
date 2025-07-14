@@ -58,6 +58,8 @@ class Product(models.Model):
     def upload_from_parts(name: str):
         import pandas as pd
         Product.objects.all().delete()
+        Category.objects.all().delete()
+        Subcategory.objects.all().delete()
         df = pd.read_excel("parts.xlsx")
         desired_columns = df.columns.tolist()
         parts_list = df.to_dict(orient="records")
