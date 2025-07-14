@@ -75,11 +75,13 @@ class Product(models.Model):
         for part in parts_list:
             if not Category.objects.filter(name=part['Категория']):
                 category = Category.objects.create(name=part['Категория'])
+                print(f'created category {category.id}')
             else:
                 category = Category.objects.get(name=part['Категория'])
 
             if not Subcategory.objects.filter(name=part['Подкатегория'], category=category):
                 subcategory = Subcategory.objects.create(name=part['Подкатегория'], category=category)
+                print(f'created subcategory {subcategory.id}')
             else:
                 subcategory = Subcategory.objects.get(name=part['Подкатегория'], category=category)
 
