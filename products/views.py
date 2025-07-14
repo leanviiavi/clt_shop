@@ -590,7 +590,14 @@ class CategoryesAPI(APIView):
             categoryes = Category.objects.all()
 
         serializer = CategorySerializer(categoryes, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        data = serializer.data
+        order = ['Оптика', 'Кузовные запчасти', 'Ходовые запчасти', 'Расходники', 'Аксессуары', 'Автоаксессуары']
+        ordered_data = []
+        for o in order:
+            for item in data:
+                if o == item['name']:
+                    ordered_data.append(item)
+        return Response(ordered_data, status=status.HTTP_200_OK)
     
 class SubcategoryesAPI(APIView):
     def get(self, request):
